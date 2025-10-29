@@ -6,6 +6,7 @@
 #include "esp_event.h"
 #include "ubt_button.h"
 #include "ubt_network.h"
+#include "ubt_led.h"
 #include "common.h"
 #include "cJSON.h"
 #include "esp_mac.h"
@@ -56,6 +57,7 @@ static void _send_identify_message(void)
 static void main_task(void *pvParameters)
 {
     uint32_t u32Notification = 0;
+
     ESP_LOGI(TAG, "Buzzer ready");
     while (true)
     {
@@ -84,4 +86,5 @@ void app_main(void)
     xTaskCreate(&main_task, "main_task", 4096, NULL, 5, &xAppTask);
     ubt_network_start();
     ubt_button_start();
+    ubt_led_start();
 }

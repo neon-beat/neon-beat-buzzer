@@ -7,6 +7,7 @@
 #include "esp_websocket_client.h"
 #include "esp_event.h"
 #include "common.h"
+#include "ws_commands.h"
 
 #define TAG "NWM"
 
@@ -35,7 +36,8 @@ static void _websocket_event_handler(void *handler_args, esp_event_base_t base, 
             ESP_LOGI(TAG, "RX: pong");
             break;
         case 0x1:
-            ESP_LOGI(TAG, "RX: data (%s)", (char *)data->data_ptr);
+            ESP_LOGI(TAG, "RX: data (%.*s)", data->data_len, (char *)data->data_ptr);
+            ws_commands_process(data->data_ptr, data->data_len);
             break;
         default:
             ESP_LOGW(TAG, "Unprocessed websocket opcode %d", data->op_code);
