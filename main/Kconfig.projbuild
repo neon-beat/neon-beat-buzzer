@@ -20,4 +20,14 @@ menu "Buzzer configuration"
 	  and not a _pin_ number (relevant for the module as a whole). For
 	  example, on Xiao ESP32C3, if you hook the button on pin D0, it is
 	  then GPIO2, so you need to set the button value to 2.
+    config UBT_LED_GPIO
+        int "GPIO on which the WS2812 led is connected"
+        default 3
+        help
+	  Users must take care to select a GPIO on which a RMT peripheral
+	  can be muxed. Take care of setting a _GPIO_ number (ie a number
+	  relevant for the ESP32 chip) and not a _pin_ number (relevant for
+	  the module as a whole). For example, on Xiao ESP32C3, if you hook
+	  the button on pin D1, it is then GPIO3, so you need to set the
+	  button value to 3.
 endmenu
