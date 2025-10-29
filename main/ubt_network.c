@@ -51,7 +51,7 @@ static void _websocket_event_handler(void *handler_args, esp_event_base_t base, 
 static void _configure_websocket_client(void)
 {
     char uri[64] = {0};
-    snprintf(uri, 64, "ws://%s:%d", CONFIG_UBT_WEBSOCKET_SERVER_ADDRESS, CONFIG_UBT_WEBSOCKET_SERVER_PORT);
+    snprintf(uri, 64, "ws://%s:%d/ws", CONFIG_UBT_WEBSOCKET_SERVER_ADDRESS, CONFIG_UBT_WEBSOCKET_SERVER_PORT);
     const esp_websocket_client_config_t ws_cfg = {
         .uri = uri,
         .reconnect_timeout_ms = 2000,
