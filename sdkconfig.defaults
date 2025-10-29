@@ -2,3 +2,6 @@
 # Espressif IoT Development Framework (ESP-IDF) 5.4.1 Project Minimal Configuration
 #
 CONFIG_IDF_TARGET="esp32c3"
+CONFIG_UBT_AP_SSID="nb_ap"
+CONFIG_UBT_AP_PASSWORD="nb_ap14789"
+CONFIG_UBT_WEBSOCKET_SERVER_PORT=8080
