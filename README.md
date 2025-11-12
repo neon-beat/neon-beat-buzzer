@@ -8,6 +8,13 @@ The Neon Beat Buzzer is a companion device for the Neon Beat game. Its main
 goal is to provide a basic user interface to allow blind test players to
 compete.
 
+## Project state
+
+The Neon beat buzzer is actively maintained and in sync with other
+components of the Neon Beat game. A rewrite in Rust is however in progress.
+It may be integrated at some point in this very same repository, or in a
+new one.
+
 ## Architecture
 
 The buzzer relies on ESP32 with a button connected to it. The buzzer must
