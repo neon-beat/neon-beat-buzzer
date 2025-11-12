@@ -138,5 +138,7 @@ void ubt_led_start() {
 }
 
 void ubt_led_run_pattern(struct led_cmd *cmd) {
+    if (!cmd_queue)
+	    return;
     xQueueSend(cmd_queue, cmd, 0);
 }
