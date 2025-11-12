@@ -60,7 +60,6 @@ static void led_task(void *pvParameters)
                     continue;
                     break;
                 case LED_PATTERN_BLINK:
-                    wait_delay_ticks = pdMS_TO_TICKS(cmd.period_ms/2);
                     blink_state = false;
                     break;
                 case LED_PATTERN_WAVE:
@@ -86,12 +85,15 @@ static void led_task(void *pvParameters)
          */
         switch (current_cmd.pattern) {
             case LED_PATTERN_BLINK:
-                if (!blink_state)
+                if (!blink_state) {
                     led_strip_set_pixel_hsv(led_strip, 0, current_cmd.color.hue,
                             current_cmd.color.saturation,
                             current_cmd.color.value);
-                else
+                    wait_delay_ticks = pdMS_TO_TICKS(cmd.period_ms*cmd.duty_cycle/100);
+		} else {
                     led_strip_set_pixel_hsv(led_strip, 0, 0, 0, 0);
+                    wait_delay_ticks = pdMS_TO_TICKS(cmd.period_ms*(100-cmd.duty_cycle)/100);
+		}
                 blink_state = !blink_state;
                 led_strip_refresh(led_strip);
                 break;
