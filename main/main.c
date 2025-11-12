@@ -12,7 +12,28 @@
 #include "esp_mac.h"
 
 #define TAG "APP"
+#define CONNECTING_PATTERN_DELAY_MS	5000
+
 TaskHandle_t xAppTask = NULL;
+TimerHandle_t connecting_pattern_timer;
+
+static void connecting_pattern_timer_cb(TimerHandle_t handle)
+{
+    struct led_cmd cmd = {
+	    .pattern = LED_PATTERN_BLINK,
+	    .color = {
+		    .hue = 0,
+		    .saturation = 0,
+		    .value = 255,
+	    },
+	    .duration_ms = 0,
+	    .period_ms = 5000,
+	    .duty_cycle = 10
+    };
+
+    ESP_LOGI(TAG, "Starting \"Waiting Connection\" pattern");
+    ubt_led_run_pattern(&cmd);
+}
 
 static void _send_button_pushed_message(void)
 {
@@ -74,6 +95,7 @@ static void main_task(void *pvParameters)
         else if (u32Notification & (1 << NOTIFICATION_NETWORK_UP))
         {
             ESP_LOGI(TAG, "Connected to server, send identification");
+	    xTimerStop(connecting_pattern_timer, 0);
             _send_identify_message();
         }
     }
@@ -81,10 +103,15 @@ static void main_task(void *pvParameters)
 
 void app_main(void)
 {
+
     esp_log_level_set(TAG, ESP_LOG_DEBUG);
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     xTaskCreate(&main_task, "main_task", 4096, NULL, 5, &xAppTask);
+    connecting_pattern_timer = xTimerCreate(
+        "Connecting Pattern Timer", pdMS_TO_TICKS(CONNECTING_PATTERN_DELAY_MS),
+        pdFALSE, 0, connecting_pattern_timer_cb);
     ubt_network_start();
     ubt_button_start();
     ubt_led_start();
+    xTimerStart(connecting_pattern_timer, 0);
 }
