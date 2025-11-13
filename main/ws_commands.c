@@ -33,7 +33,7 @@ static int parse_blink_pattern(struct cJSON *details, struct led_cmd *cmd)
 	cmd->duration_ms = duration_ms->valueint;
 	cmd->period_ms = period_ms->valueint;
 	cmd->duty_cycle = (int)(dc->valuedouble * 100);
-	cmd->color.hue = (int)(h->valuedouble);
+	cmd->color.hue = (int)(h->valuedouble > 0 ? h->valuedouble:360 + h->valuedouble);
 	cmd->color.saturation = (int)(s->valuedouble * 255);
 	cmd->color.value = (int)(v->valuedouble * 255);
 	return 0;
@@ -66,7 +66,7 @@ static int parse_wave_pattern(struct cJSON *details, struct led_cmd *cmd)
 	cmd->duration_ms = duration_ms->valueint;
 	cmd->period_ms = period_ms->valueint;
 	cmd->duty_cycle = (int)(dc->valuedouble * 100);
-	cmd->color.hue = (int)(h->valuedouble);
+	cmd->color.hue = (int)(h->valuedouble > 0 ? h->valuedouble:360 + h->valuedouble);
 	cmd->color.saturation = (int)(s->valuedouble * 255);
 	cmd->color.value = (int)(v->valuedouble * 255);
 	return 0;
